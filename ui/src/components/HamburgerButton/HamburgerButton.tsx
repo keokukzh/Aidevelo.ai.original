@@ -1,7 +1,7 @@
-import React from 'react';
 import styles from './HamburgerButton.module.css';
+import type { ButtonHTMLAttributes } from 'react';
 
-export interface HamburgerButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface HamburgerButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   open: boolean;
 }
 
