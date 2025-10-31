@@ -1,9 +1,9 @@
 {
-  "buildCommand": "npm install && npm run build",
-  "outputDirectory": ".next",
+  "buildCommand": "npm install && npm run build:cloudflare",
+  "outputDirectory": ".vercel/output/static",
   "rootDirectory": "ui",
   "framework": "nextjs",
   "installCommand": "npm install",
-  "buildOutputDir": ".next"
+  "buildOutputDir": ".vercel/output/static"
 }
 
