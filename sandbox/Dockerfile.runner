@@ -1,0 +1,16 @@
+FROM node:20-bookworm
+
+# Add Python for polyglot builds
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 python3-pip git ca-certificates curl && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+
+# Default non-root user for safety
+RUN useradd -m builder && chown -R builder:builder /workspace
+USER builder
+
+CMD ["bash", "-lc", "echo sandbox ready; sleep infinity"]
+
+

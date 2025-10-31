@@ -1,0 +1,12 @@
+{
+  "name": "AIDEVELO.AI",
+  "short_name": "AIDEVELO",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0a1e",
+  "theme_color": "#0f0a1e",
+  "icons": [
+    { "src": "/ui/assets/icons/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/ui/assets/icons/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

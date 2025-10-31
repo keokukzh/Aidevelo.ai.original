@@ -1,0 +1,9 @@
+.root { width: 40px; height: 40px; position: relative; }
+.bar { position: absolute; left: 8px; right: 8px; height: 2px; background: var(--color-text); transition: transform .2s ease, opacity .2s ease, top .2s ease; }
+.bar1 { top: 12px; }
+.bar2 { top: 19px; }
+.bar3 { top: 26px; }
+.open .bar1 { top: 19px; transform: rotate(45deg); }
+.open .bar2 { opacity: 0; }
+.open .bar3 { top: 19px; transform: rotate(-45deg); }
+

@@ -1,0 +1,57 @@
+/* Import Design Tokens */
+@import './design-tokens.css';
+
+/* CSS Reset (modern minimal) */
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body { 
+  margin: 0; 
+  font-family: var(--font-family-base); 
+  background: var(--color-bg); 
+  color: var(--color-text); 
+  -webkit-font-smoothing: antialiased; 
+  -moz-osx-font-smoothing: grayscale; 
+  /* Prevent layout shifts from font loading */
+  font-display: swap;
+}
+
+/* Font-face declarations if using custom fonts */
+@font-face {
+  font-family: 'System Font';
+  font-display: swap; /* Prevent FOIT (Flash of Invisible Text) */
+}
+img, video { max-width: 100%; height: auto; }
+button, input, textarea, select { font: inherit; }
+
+/* Focus styles using design tokens */
+:root {
+  --focus: 0 0 0 3px var(--color-focus);
+}
+
+html { scroll-behavior: smooth; }
+
+a { color: var(--color-accent); text-decoration: none; }
+a:focus { outline: none; box-shadow: var(--focus); border-radius: var(--radius-sm); }
+button:focus-visible, [tabindex="0"]:focus-visible { outline: none; box-shadow: var(--focus); }
+
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  padding: var(--space-2) var(--space-4);
+  text-decoration: none;
+  z-index: var(--z-tooltip);
+  border-radius: var(--radius-md);
+}
+.skip-link:focus {
+  top: var(--space-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+
+

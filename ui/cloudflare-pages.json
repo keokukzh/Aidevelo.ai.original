@@ -1,0 +1,9 @@
+{
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": ".next",
+  "rootDirectory": "ui",
+  "framework": "nextjs",
+  "installCommand": "npm install",
+  "buildOutputDir": ".next"
+}
+

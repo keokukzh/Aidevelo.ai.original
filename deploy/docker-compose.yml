@@ -1,0 +1,151 @@
+
+name: local-ai-builder
+
+services:
+  # GPU profile: vLLM serving OpenAI-compatible API for large models
+  vllm:
+    image: vllm/vllm-openai:latest
+    profiles: ["gpu"]
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: ["gpu"]
+    environment:
+      - VLLM_WORKER_USE_CUDA_GRAPH=false
+      - HF_HOME=/models
+      # Default models can be overridden via .env
+      - MODEL=${REASONING_MODEL}
+      - MAX_MODEL_LEN=${VLLM_MAX_MODEL_LEN:-32768}
+      - GPU_MEMORY_UTILIZATION=${VLLM_GPU_UTILIZATION:-0.9}
+      - TRUST_REMOTE_CODE=1
+    command:
+      - "--model"
+      - "${REASONING_MODEL}"
+      - "--max-model-len"
+      - "${VLLM_MAX_MODEL_LEN:-32768}"
+      - "--gpu-memory-utilization"
+      - "${VLLM_GPU_UTILIZATION:-0.9}"
+      - "--trust-remote-code"
+      - "--dtype"
+      - "bfloat16"
+      - "--api-key"
+      - "${OPENAI_COMPAT_API_KEY:-local-key}"
+    volumes:
+      - models:/models
+      - cache:/cache
+    ports:
+      - "${VLLM_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "bash", "-lc", "curl -sS http://localhost:8000/health | grep -q ok"]
+      interval: 20s
+      timeout: 5s
+      retries: 15
+
+  # CPU or secondary GPU profile: Ollama for lighter models
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["cpu", "gpu"]
+    restart: unless-stopped
+    volumes:
+      - ollama:/root/.ollama
+    environment:
+      - OLLAMA_KEEP_ALIVE=1h
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    healthcheck:
+      test: ["CMD", "bash", "-lc", "curl -sS http://localhost:11434/api/tags | grep -q 'models'"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  backend:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    environment:
+      - BACKEND_PORT=${BACKEND_PORT:-8080}
+      - MODEL_HOST_VLLM=${MODEL_HOST_VLLM:-http://vllm:8000}
+      - MODEL_HOST_OLLAMA=${MODEL_HOST_OLLAMA:-http://ollama:11434}
+      - REASONING_MODEL=${REASONING_MODEL}
+      - CODING_MODEL=${CODING_MODEL}
+      - OPENAI_COMPAT_API_KEY=${OPENAI_COMPAT_API_KEY:-local-key}
+      - DATABASE_URL=sqlite:///data/app.db
+      - AGL_EMIT=${AGL_EMIT:-false}
+      - AGL_PROJECT=${AGL_PROJECT:-aidevelo}
+      - AGL_ALGO=${AGL_ALGO:-grpo}
+      - AGL_RESOURCE_DIR=${AGL_RESOURCE_DIR:-/data/agl/resources}
+      - AGL_STORE_URL=${AGL_STORE_URL:-sqlite:////data/agl/agl.db}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    volumes:
+      - app_data:/data
+    # No GPU reservation in CPU mode
+    healthcheck:
+      test: ["CMD", "bash", "-lc", "curl -sS http://localhost:8080/health | grep -q ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  sandbox:
+    build:
+      context: ..
+      dockerfile: sandbox/Dockerfile.runner
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:size=256m
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2g
+    volumes:
+      - ../workspace:/workspace
+    # Default: no published network; disable outbound via custom network rules if needed
+    profiles: ["sandbox"]
+
+  agl-store:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=agl
+      - POSTGRES_PASSWORD=aglpass
+      - POSTGRES_DB=agl
+    volumes:
+      - agl_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "bash", "-lc", "pg_isready -U agl -d agl"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  agl-trainer:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    depends_on:
+      agl-store:
+        condition: service_healthy
+    environment:
+      - AGL_PROJECT=${AGL_PROJECT:-aidevelo}
+      - AGL_ALGO=${AGL_ALGO:-grpo}
+      - AGL_STORE_URL=${AGL_STORE_URL:-postgresql://agl:aglpass@agl-store:5432/agl}
+      - AGL_RESOURCE_DIR=${AGL_RESOURCE_DIR:-/data/agl/resources}
+    command: ["python", "-c", "import time; print('AGL trainer placeholder running'); time.sleep(10**9)"]
+    volumes:
+      - app_data:/data
+    # Runs on CPU in shadow mode; enable GPU later if needed
+
+volumes:
+  models:
+  cache:
+  ollama:
+  app_data:
+  agl_pg:
+
+networks:
+  default:
+    name: local-ai-builder
+

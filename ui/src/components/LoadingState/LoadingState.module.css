@@ -1,0 +1,95 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  color: var(--color-muted);
+}
+
+.sm {
+  padding: var(--space-4);
+  gap: var(--space-2);
+}
+
+.md {
+  padding: var(--space-8);
+  gap: var(--space-4);
+}
+
+.lg {
+  padding: var(--space-12);
+  gap: var(--space-6);
+}
+
+.spinner {
+  position: relative;
+  display: inline-block;
+}
+
+.spinnerRing {
+  position: absolute;
+  border: 2px solid transparent;
+  border-top-color: var(--color-accent);
+  border-radius: var(--radius-full);
+  animation: spin 1s linear infinite;
+}
+
+.sm .spinnerRing {
+  width: 20px;
+  height: 20px;
+}
+
+.md .spinnerRing {
+  width: 32px;
+  height: 32px;
+  border-width: 3px;
+}
+
+.lg .spinnerRing {
+  width: 48px;
+  height: 48px;
+  border-width: 4px;
+}
+
+.spinnerRing:nth-child(2) {
+  animation-delay: 0.2s;
+  opacity: 0.7;
+}
+
+.spinnerRing:nth-child(3) {
+  animation-delay: 0.4s;
+  opacity: 0.4;
+}
+
+.message {
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+}
+
+.sm .message {
+  font-size: var(--font-size-xs);
+}
+
+.lg .message {
+  font-size: var(--font-size-base);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinnerRing {
+    animation: none;
+    border-top-color: var(--color-accent);
+    opacity: 1;
+  }
+}
+

@@ -1,0 +1,74 @@
+# ===== Local AI Builder - Environment Example =====
+# Copy this file to .env and replace placeholder values.
+# Do NOT commit real secrets. All keys below MUST be placeholders.
+
+# --- Model serving ---
+# vLLM OpenAI-compatible server (GPU profile)
+REASONING_MODEL=deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+CODING_MODEL=Qwen/Qwen2.5-Coder-32B
+VLLM_PORT=8000
+VLLM_MAX_MODEL_LEN=32768
+VLLM_GPU_UTILIZATION=0.9
+OPENAI_COMPAT_API_KEY=change-me
+
+# Ollama (CPU/GPU) fallback and small models
+OLLAMA_PORT=11434
+# Optionally pre-pull models after container start:
+# OLLAMA_MODELS="qwen2.5-coder:7b qwen2.5:14b-instruct"
+
+# --- Backend/UI ---
+BACKEND_PORT=8080
+UI_PORT=5173
+
+# --- Agent Lightning ---
+AGL_EMIT=false
+AGL_PROJECT=aidevelo
+AGL_ALGO=grpo
+AGL_RESOURCE_DIR=/data/agl/resources
+# For dev you can use sqlite path in backend env; compose uses Postgres service name `agl-store` below
+AGL_STORE_URL=postgresql://agl:password@agl-store:5432/agl
+
+# --- Integrations (optional; enable later) ---
+# Google (placeholders)
+GOOGLE_API_KEY=your-google-api-key
+GOOGLE_OAUTH_CLIENT_ID=your-google-oauth-client-id
+GOOGLE_OAUTH_CLIENT_SECRET=your-google-oauth-client-secret
+
+# Supabase
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE=
+
+# Neo4j
+NEO4J_URI=
+NEO4J_USER=
+NEO4J_PASSWORD=
+
+# Cloudflare (placeholders)
+CLOUDFLARE_API_TOKEN=your-cloudflare-api-token
+CLOUDFLARE_ACCOUNT_ID=your-cloudflare-account-id
+CLOUDFLARE_ZONE_ID=your-cloudflare-zone-id
+
+
+# Docker registry (optional placeholders)
+DOCKER_REGISTRY=your-docker-namespace
+REGISTRY_TOKEN=your-registry-token
+
+# --- Misc ---
+MODEL_HOST_VLLM=http://vllm:8000
+MODEL_HOST_OLLAMA=http://ollama:11434
+
+# Embeddings (local)
+EMBEDDING_MODEL=BAAI/bge-m3
+
+# Neon Postgres (optional)
+NEON_DATABASE_URL=postgresql://user:password@host:5432/db
+NEON_REST_URL=https://your-neon-rest-url
+
+
+# PostHog (optional)
+POSTHOG_API_KEY=your-posthog-api-key
+
+# OpenAI (optional external)
+OPENAI_API_KEY=your-openai-api-key
+
