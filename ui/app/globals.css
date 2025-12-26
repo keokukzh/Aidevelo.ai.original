@@ -34,3 +34,246 @@ html {
 }
 
 
+/* ----------------------------------------------------
+   Terminal UI Theme and Base Styles
+   ---------------------------------------------------- */
+
+:root {
+  /* Terminal Background Colors */
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #2a2a2a;
+
+  /* Terminal Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --text-accent: #d97706; /* Orange accent */
+  --text-success: #10b981; /* Green for success */
+  --text-warning: #f59e0b; /* Yellow for warnings */
+  --text-error: #ef4444;   /* Red for errors */
+
+  /* Terminal Borders */
+  --border-primary: #404040;
+  --border-secondary: #606060;
+
+  /* Spacing and Radius */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --radius-sm: 4px;
+  --radius-lg: 8px;
+}
+
+.terminal {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-primary);
+  padding: var(--space-3);
+}
+
+.terminal-section {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.terminal-header {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.ascii-title pre,
+.ascii-art {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  white-space: pre;
+}
+
+.terminal-subtitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-success);
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+.terminal-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-success);
+  display: inline-block;
+  vertical-align: baseline;
+  margin-right: 0.25rem;
+  margin-bottom: 2px;
+}
+
+.terminal-command {
+  background: var(--bg-tertiary);
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-primary);
+}
+
+.terminal-command .search-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px 0;
+  font-size: 18px;
+}
+
+.terminal-command .title-params {
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.terminal-command .search-subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.terminal-search-container {
+  margin-top: var(--space-1);
+}
+
+.terminal-search-wrapper {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+}
+
+.terminal-prompt {
+  color: var(--text-accent);
+  font-weight: 700;
+}
+
+.terminal-search-input,
+.terminal-input {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  outline: none;
+}
+
+.terminal-search-input::placeholder,
+.terminal-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.terminal-search-input:focus,
+.terminal-input:focus {
+  border-color: var(--text-accent);
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
+}
+
+.terminal-btn {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.terminal-btn:hover {
+  background: var(--text-accent);
+  border-color: var(--text-accent);
+  color: var(--bg-primary);
+}
+
+.component-type-filters {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.filter-group-label {
+  color: var(--text-secondary);
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-chip {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.filter-chip.active {
+  border-color: var(--text-accent);
+  color: var(--text-accent);
+}
+
+.chip-icon {
+  margin-right: 6px;
+}
+
+.command-line {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+}
+
+.command-line .prompt {
+  color: var(--text-success);
+  font-weight: 700;
+}
+
+.command-line .command {
+  color: var(--text-primary);
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.copy-btn {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  color: var(--text-primary);
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background: var(--text-accent);
+  border-color: var(--text-accent);
+  color: var(--bg-primary);
+}
+
+
